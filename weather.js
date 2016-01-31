@@ -74,8 +74,25 @@ document.addEventListener('DOMContentLoaded', () => {
 		humidity.textContent += data.main.humidity + '%';
 		clouds.textContent += data.clouds.all + '%';
 		wind.textContent += parseInt(data.wind.speed) + 'm/sec';
-		if (data.rain && data.rain['3h'] > 0 ) precip.textContent += 'Raining';
-		else if (data.snow && data.snow['3h'] > 0 ) precip.textContent += 'Snowing';
+
+		//set up BG graphic
+		if (convertTemp(data.main.temp - 273.15, 'C') >= 85)
+			document.body.style['background-image'] = 'url(\'assets/desert.jpg\')';
+		else if (convertTemp(data.main.temp - 273.15, 'C') <= 50) 
+			document.body.style['background-image'] = 'url(\'assets/cold.jpg\')';
+		else if (data.clouds.all >= 30) 
+			document.body.style['background-image'] = 'url(\'assets/clouds.jpg\')';
+		else
+			document.body.style['background-image'] = 'url(\'assets/sunny.jpg\')';
+
+		if (data.rain && data.rain['3h'] > 0 ) {
+			precip.textContent += 'Raining';
+			body.style['background-image'] = 'url(\'assets\\rain.jpg\')';
+		}
+		else if (data.snow && data.snow['3h'] > 0 ) {
+			precip.textContent += 'Snowing';
+			body.style['background-image'] = 'url(\'assets\\snow.jpg\')';
+		}
 		else precip.textContent += 'None';
 
 		loadMessage.parentNode.removeChild(loadMessage);
