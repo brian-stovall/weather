@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	var wind = grab('wind');
 	var precip = grab('precip');
 
+	temp.isCelsius = true;
+	wind.isMeters = true;
+
 	var myApiKey = 'f772b2d3d7afa3658b517ec81afdea91';
 	var latitude, longitude;
 	navigator.geolocation.getCurrentPosition( geoSuccess, geoFail );
@@ -37,13 +40,33 @@ document.addEventListener('DOMContentLoaded', () => {
 		console.log('Geolocation doesn\'t seem to be functioning now...');
 	}
 
+	temp.onclick = () => {
+		var value = parseInt(temp.textContent.match(/\d+/g));
+		console.log(value);
+		var unit = (temp.isCelsius) ? 'C' : 'F'; 
+		value = Math.round(convertTemp(value, unit));
+		temp.isCelsius = !temp.isCelsius;
+		unit = (temp.isCelsius) ? 'C' : 'F';
+		temp.textContent = 'Temperature: ' + value + unit;
+	}
+
+	wind.onclick = () => {
+		var value = parseInt(wind.textContent.match(/\d+/g));
+		console.log(value);
+		var unit = (wind.isMeters) ? 'm/sec' : 'mph'; 
+		value = Math.round(convertSpeed(value, unit));
+		wind.isMeters = !wind.isMeters;
+		var unit = (wind.isMeters) ? 'm/sec' : 'mph'; 
+		wind.textContent = 'Wind Speed: ' + value + unit;
+	}
+
 	//populates the website with info from the api JSON
 	function populate(data) {
 		place.textContent = data.name + ', ' + data.sys.country;
 		temp.textContent += parseInt(data.main.temp - 273.15) + 'C';
 		humidity.textContent += data.main.humidity + '%';
 		clouds.textContent += data.clouds.all + '%';
-		wind.textContent += data.wind.speed + 'm/sec';
+		wind.textContent += parseInt(data.wind.speed) + 'm/sec';
 		if (data.rain && data.rain['3h'] > 0 ) precip.textContent += 'Raining';
 		else if (data.snow && data.snow['3h'] > 0 ) precip.textContent += 'Snowing';
 		else precip.textContent += 'None';
@@ -58,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	//converts between m/sec and mph
 	function convertSpeed(number, unit) {
-		if (unit === 'mpsec') return number * 2.23694;
+		if (unit === 'm/sec') return number * 2.23694;
 		if (unit === 'mph') return  number / 2.23694;
 		return false;
 	}

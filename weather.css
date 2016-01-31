@@ -2,6 +2,11 @@ body {
 	background-color:black;
 }
 
+hr {
+	margin-top:0;
+	border-color:black;
+}
+
 @media (max-width:710px) {
 	h3 {
 	font-size:3vw;
