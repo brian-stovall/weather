@@ -36,5 +36,6 @@ hr {
 	position:relative;
 	top:10vh;
   left:20vw;
-	background-color:#3af;
+	background-color:rgba(150,150,150, .6);
+	border-color:black;
 }
