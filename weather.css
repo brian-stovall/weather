@@ -1,5 +1,9 @@
 body {
 	background-color:black;
+	width:100vw;
+	height:100vh;
+	background-size:cover;
+	overflow-x:hidden;
 }
 
 hr {
@@ -16,7 +20,16 @@ hr {
 	}
 }
 
+#loadMessage {
+	position:relative;
+	color:white;
+	top:40vh;
+	font-size:5vw;
+}
+
+
 #stats {
+	visibility:hidden;
 	width:50%;
 	margin-left:5vw;
 	margin-right:5vw;

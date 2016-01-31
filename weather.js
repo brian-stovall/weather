@@ -7,7 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
 	var clouds = grab('clouds');
 	var wind = grab('wind');
 	var precip = grab('precip');
+	var stats = grab('stats');
+	var loadMessage = grab('loadMessage');
 
+	//boolean flags to track which units are being used
 	temp.isCelsius = true;
 	wind.isMeters = true;
 
@@ -16,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	navigator.geolocation.getCurrentPosition( geoSuccess, geoFail );
 
 	var weatherRequest = new XMLHttpRequest();
+
 	weatherRequest.onload = function() {
 		if (weatherRequest.status >= 200 && weatherRequest.status <= 400) {
 			console.log('success! rec\'d: ' + weatherRequest.responseText);
@@ -26,18 +30,21 @@ document.addEventListener('DOMContentLoaded', () => {
 			
 
 	function geoSuccess(position) { 
+		//update the page's status
+		loadMessage.textContent = 'Position successfully obtained. Requesting weather data.';
+		//obtain lat & lon
 		latitude = position.coords.latitude;
 		longitude = position.coords.longitude;
-		console.log(latitude + ', ' + longitude);
+
+		//build and send the request
 		var url = 'http://api.openweathermap.org/data/2.5/weather?lat=' + latitude +
 			'&lon=' + longitude + '&APPID=' + myApiKey
-		console.log('sending : ' + url);
 		weatherRequest.open('GET', url );
 		weatherRequest.send();
 	}
 
 	function geoFail() { 
-		console.log('Geolocation doesn\'t seem to be functioning now...');
+		loadMessage.textContent = 'Fatal error: Unable to determine your location.';
 	}
 
 	temp.onclick = () => {
@@ -70,6 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (data.rain && data.rain['3h'] > 0 ) precip.textContent += 'Raining';
 		else if (data.snow && data.snow['3h'] > 0 ) precip.textContent += 'Snowing';
 		else precip.textContent += 'None';
+
+		loadMessage.parentNode.removeChild(loadMessage);
+		stats.style.visibility = 'visible';
 	}
 
 	//converts celsius to fahrenheit and vice versa
