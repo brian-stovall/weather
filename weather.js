@@ -40,12 +40,27 @@ document.addEventListener('DOMContentLoaded', () => {
 	//populates the website with info from the api JSON
 	function populate(data) {
 		place.textContent = data.name + ', ' + data.sys.country;
-		temp.textContent += data.main.temp - 273.15 + 'C';
-		humidity.textContent += data.main.humidity + ' %';
-		clouds.textContent += data.clouds.all + ' %';
+		temp.textContent += parseInt(data.main.temp - 273.15) + 'C';
+		humidity.textContent += data.main.humidity + '%';
+		clouds.textContent += data.clouds.all + '%';
 		wind.textContent += data.wind.speed + 'm/sec';
 		if (data.rain && data.rain['3h'] > 0 ) precip.textContent += 'Raining';
 		else if (data.snow && data.snow['3h'] > 0 ) precip.textContent += 'Snowing';
+		else precip.textContent += 'None';
+	}
+
+	//converts celsius to fahrenheit and vice versa
+	function convertTemp(number, unit) {
+		if (unit === 'C') return number * (9/5) + 32;
+		if (unit === 'F') return (number - 32) * (5/9);
+		return false;
+	}
+
+	//converts between m/sec and mph
+	function convertSpeed(number, unit) {
+		if (unit === 'mpsec') return number * 2.23694;
+		if (unit === 'mph') return  number / 2.23694;
+		return false;
 	}
 	
 });
