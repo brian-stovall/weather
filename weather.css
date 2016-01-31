@@ -1,0 +1,17 @@
+body {
+	background-color:black;
+}
+
+@media (max-width:350px) {
+	h3 {
+	font-size:6vw;
+	}
+}
+
+#stats {
+	margin-left:5vw;
+	margin-right:5vw;
+	position:relative;
+	top:10vh;
+	background-color:#3af;
+}
