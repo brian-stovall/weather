@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	var wind = grab('wind');
 	var precip = grab('precip');
 	var stats = grab('stats');
+	var windToggle = grab('windToggle');
+	var tempToggle = grab('tempToggle');
 	var loadMessage = grab('loadMessage');
 
 	//boolean flags to track which units are being used
@@ -54,18 +56,26 @@ document.addEventListener('DOMContentLoaded', () => {
 		value = Math.round(convertTemp(value, unit));
 		temp.isCelsius = !temp.isCelsius;
 		unit = (temp.isCelsius) ? 'C' : 'F';
-		temp.textContent = 'Temperature: ' + value + unit;
+		temp.textContent = value + unit;
+		tempToggle.classList.toggle('fa-toggle-on');
+		tempToggle.classList.toggle('fa-toggle-off');
 	}
+
+	tempToggle.onclick = temp.onclick;
 
 	wind.onclick = () => {
 		var value = parseInt(wind.textContent.match(/\d+/g));
 		console.log(value);
-		var unit = (wind.isMeters) ? 'm/sec' : 'mph'; 
+		var unit = (wind.isMeters) ? 'm/s' : 'mph'; 
 		value = Math.round(convertSpeed(value, unit));
 		wind.isMeters = !wind.isMeters;
-		var unit = (wind.isMeters) ? 'm/sec' : 'mph'; 
-		wind.textContent = 'Wind Speed: ' + value + unit;
+		var unit = (wind.isMeters) ? 'm/s' : 'mph'; 
+		wind.textContent = value + unit;
+		windToggle.classList.toggle('fa-toggle-on');
+		windToggle.classList.toggle('fa-toggle-off');
 	}
+
+	windToggle.onclick = wind.onclick;
 
 	//populates the website with info from the api JSON
 	function populate(data) {
@@ -73,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		temp.textContent += parseInt(data.main.temp - 273.15) + 'C';
 		humidity.textContent += data.main.humidity + '%';
 		clouds.textContent += data.clouds.all + '%';
-		wind.textContent += parseInt(data.wind.speed) + 'm/sec';
+		wind.textContent += parseInt(data.wind.speed) + 'm/s';
 
 		//set up BG graphic
 		if (convertTemp(data.main.temp - 273.15, 'C') >= 85)
@@ -106,9 +116,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		return false;
 	}
 
-	//converts between m/sec and mph
+	//converts between m/s and mph
 	function convertSpeed(number, unit) {
-		if (unit === 'm/sec') return number * 2.23694;
+		if (unit === 'm/s') return number * 2.23694;
 		if (unit === 'mph') return  number / 2.23694;
 		return false;
 	}

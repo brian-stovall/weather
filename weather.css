@@ -1,9 +1,23 @@
+html {
+	width:100vw;
+	height:100vh;
+}
+
 body {
 	background-color:black;
 	width:100vw;
 	height:100vh;
 	background-size:cover;
 	overflow-x:hidden;
+}
+
+span {
+	margin-left:1vw;
+	text-align:right;
+}
+
+#humidity {
+	margin-left:5vw;
 }
 
 hr {
@@ -19,6 +33,7 @@ hr {
 		font-size:5vw;
 	}
 }
+
 
 #loadMessage {
 	position:relative;
@@ -39,3 +54,4 @@ hr {
 	background-color:rgba(150,150,150, .6);
 	border-color:black;
 }
+
